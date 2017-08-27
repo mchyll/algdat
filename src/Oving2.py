@@ -49,7 +49,7 @@ for i in range(20):
     print("  Svar: {}, tid={} µs".format(result, elapsed))
 
 if num > 0:
-    print("Gjennomsnitt tidsbruk: {} µs".format(sumTime / num))
+    print("Gjennomsnitt tidsbruk: {} µs\n".format(sumTime / num))
 
 
 print("Bruker innebygd power")
