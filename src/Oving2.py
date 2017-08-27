@@ -18,8 +18,35 @@ def power2(x, n):
     return power2(x * x, n / 2)
 
 
-for i in range(50):
+print("Bruker power1")
+sumTime = 0
+num = 0
+for i in range(20):
     start = time.time()
     result = power1(1.0000001, 900)
     stop = time.time()
-    print("Svar: {}, tStart={}, tStop={}, tid={} µs".format(result, start, stop, (stop - start) * 1000000))
+    elapsed = (stop - start) * 1000000
+    if elapsed > 0:
+        sumTime += elapsed
+        num += 1
+    print("  Svar: {}, tid={} µs".format(result, elapsed))
+
+if num > 0:
+    print("Gjennomsnitt tidsbruk: {} µs\n".format(sumTime / num))
+
+
+print("Bruker power2")
+sumTime = 0
+num = 0
+for i in range(20):
+    start = time.time()
+    result = power2(1.0000001, 900)
+    stop = time.time()
+    elapsed = (stop - start) * 1000000
+    if elapsed > 0:
+        sumTime += elapsed
+        num += 1
+    print("  Svar: {}, tid={} µs".format(result, elapsed))
+
+if num > 0:
+    print("Gjennomsnitt tidsbruk: {} µs".format(sumTime / num))
