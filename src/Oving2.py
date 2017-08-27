@@ -50,3 +50,20 @@ for i in range(20):
 
 if num > 0:
     print("Gjennomsnitt tidsbruk: {} µs".format(sumTime / num))
+
+
+print("Bruker innebygd power")
+sumTime = 0
+num = 0
+for i in range(20):
+    start = time.time()
+    result = 1.0000001 ** 900
+    stop = time.time()
+    elapsed = (stop - start) * 1000000
+    if elapsed > 0:
+        sumTime += elapsed
+        num += 1
+    print("  Svar: {}, tid={} µs".format(result, elapsed))
+
+if num > 0:
+    print("Gjennomsnitt tidsbruk: {} µs".format(sumTime / num))
