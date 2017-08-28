@@ -18,12 +18,16 @@ def power2(x, n):
     return power2(x * x, n / 2)
 
 
+tall = 1.001
+eksponent = 900
+
+
 print("Bruker power1")
 sumTime = 0
 num = 0
 for i in range(20):
     start = time.time()
-    result = power1(1.0000001, 900)
+    result = power1(tall, eksponent)
     stop = time.time()
     elapsed = (stop - start) * 1000000
     if elapsed > 0:
@@ -40,7 +44,7 @@ sumTime = 0
 num = 0
 for i in range(20):
     start = time.time()
-    result = power2(1.0000001, 900)
+    result = power2(tall, eksponent)
     stop = time.time()
     elapsed = (stop - start) * 1000000
     if elapsed > 0:
@@ -57,7 +61,7 @@ sumTime = 0
 num = 0
 for i in range(20):
     start = time.time()
-    result = 1.0000001 ** 900
+    result = tall ** eksponent
     stop = time.time()
     elapsed = (stop - start) * 1000000
     if elapsed > 0:
