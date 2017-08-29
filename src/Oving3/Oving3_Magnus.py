@@ -16,6 +16,9 @@ def quicksort(arr, left = 0, right = -1):
         insertionsort(arr)
         return
 
+    deleps = 0
+    quicksort(arr, left, deleps-1)
+    quicksort(arr, deleps + 1, right)
     l = arr[0]
     m = arr[len(arr) / 2]
     r = arr[len(arr) - 1]
