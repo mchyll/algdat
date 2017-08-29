@@ -1,4 +1,4 @@
-def insertionsort(arr, left = 0, right = -1):
+def insertionsort(arr, left=0, right=-1):
     if right < 0:
         right = len(arr)
 
@@ -11,7 +11,7 @@ def insertionsort(arr, left = 0, right = -1):
         arr[j + 1] = current
 
 
-def quicksort(arr, left = 0, right = -1):
+def quicksort(arr, left=0, right=-1):
     if right < 0:
         right = len(arr)
 
@@ -19,32 +19,35 @@ def quicksort(arr, left = 0, right = -1):
         insertionsort(arr, left, right)
         return
 
-    pivot = findmedian(arr, left, right)
-    pivotValue = arr[pivot]
+    pivot = find_and_sort_median(arr, left, right)
+    pivot_value = arr[pivot]
 
-    lowerPair = left
-    higherPair = right - 1
+    lower_pair = left
+    higher_pair = right
     arr[pivot], arr[right - 1] = arr[right - 1], arr[pivot]  # Move the pivot out of the way
 
     while True:
-        while arr[lowerPair] < pivotValue:
-            lowerPair += 1
-        while arr[higherPair] > pivotValue:
-            higherPair -= 1
+        while True:
+            lower_pair += 1
+            if arr[lower_pair] > pivot_value: break  # Found an element to be moved to the right side
 
-        if lowerPair >= higherPair:
+        while True:
+            higher_pair -= 1
+            if arr[higher_pair] < pivot_value: break  # Found an element to be moved to the left side
+
+        if lower_pair >= higher_pair:
             break
 
-        arr[lowerPair], arr[higherPair] = arr[higherPair], arr[lowerPair]
+        arr[lower_pair], arr[higher_pair] = arr[higher_pair], arr[lower_pair]
 
-    pivot = higherPair
+    pivot = lower_pair
     arr[pivot], arr[right - 1] = arr[right - 1], arr[pivot]
 
     quicksort(arr, left, pivot - 1)
     quicksort(arr, pivot + 1, right)
 
 
-def findmedian(arr, left, right):
+def find_and_sort_median(arr, left, right):
     middle = (left + right) // 2
     right -= 1
 
@@ -60,7 +63,7 @@ def findmedian(arr, left, right):
     return middle
 
 
-def verifySortedArray(arr):
+def verify_sorted_array(arr):
     prev = arr[0]
 
     for i in range(1, len(arr)):
@@ -71,10 +74,10 @@ def verifySortedArray(arr):
     return True
 
 
-arr = [x for x in range(100, 0, -1)]
-quicksort(arr)
-print(arr)
-print("Er tabellen sortert korrekt? {}".format(verifySortedArray(arr)))
+array = [x for x in range(100, 0, -1)]
+quicksort(array)
+print(array)
+print("Er tabellen sortert korrekt? {}".format(verify_sorted_array(array)))
 
 
 """
