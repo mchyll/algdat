@@ -39,4 +39,12 @@ print(arr)
         temp = arr[len(arr) / 2]
         m = arr[len(arr) / 2] = r
         r = arr[len(arr) - 1] = temp
+
+Når sorteringen (og tidtaking) er ferdig, bruk en løkke som sjekker at tabellen er korrekt
+sortert. Altså at tabell[i+1] >= tabell[i] for alle i-verdier mellom 0 og
+tabell.length-2. Dermed finner dere ut om sorteringsalgoritmen deres virker som
+den skal. Det er fort gjort å gjøre feil. Man kan sortere veldig raskt, hvis resultatet ikke
+trenger å være riktig. :-(
+
+Se på vanlige feil med tidtaking når vi er ferdig.
 """
