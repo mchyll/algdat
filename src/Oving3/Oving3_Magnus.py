@@ -1,3 +1,6 @@
+import random
+
+
 def insertionsort(arr, left=0, right=-1):
     if right < 0:
         right = len(arr)
@@ -75,6 +78,11 @@ def verify_sorted_array(arr):
 
 
 array = [x for x in range(100, 0, -1)]
+#quicksort(array)
+print(array)
+print("Er tabellen sortert korrekt? {}\n".format(verify_sorted_array(array)))
+
+array = [random.randint(-10, 100) for x in range(0, 100)]
 quicksort(array)
 print(array)
 print("Er tabellen sortert korrekt? {}".format(verify_sorted_array(array)))
