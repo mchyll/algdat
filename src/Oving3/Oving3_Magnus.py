@@ -1,4 +1,5 @@
 import random
+import time
 
 
 def insertionsort(arr, left=0, right=-1):
@@ -113,14 +114,19 @@ def verify_sorted_array(arr):
 
 
 def test_array(arr):
-    print("Opprinnelig array: ", end='')
-    print(arr)
+    print("Opprinnelig array (ti første elementer): ", end='')
+    print(arr[:10])
+    start = time.time()
     quicksort(arr)
-    print("Sortert array: ", end='')
-    print(arr)
+    elapsed = time.time() - start
+    print("Sortert array (ti første elementer): ", end='')
+    print(arr[:10])
+    print("Tid brukt: {} s".format(elapsed))
     print("Er tabellen sortert korrekt? {}\n".format(verify_sorted_array(arr)))
 
 
-test_array([x for x in range(0, 100)])
-test_array([x for x in range(100, 0, -1)])
-test_array([random.randint(-50, 100) for x in range(0, 1000)])
+size = 100000
+test_array([x for x in range(size)])
+test_array([x for x in range(size, 0, -1)])
+test_array([random.randint(-50, 100) for x in range(size)])
+test_array([5 for _ in range(size)])
