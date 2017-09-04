@@ -3,7 +3,7 @@ import math
 import time
 
 
-def insertionsort(arr):
+def insertionsort(arr, left, right):
     for i in range(1, len(arr)):
         current = arr[i]
         j = i - 1
@@ -17,11 +17,12 @@ def quicksort(arr, left=0, right=-1):
     if right == -1:
         right = len(arr) - 1
 
-    if right - left >= 10:
+    if right - left >= 34:
         delepos = splitt(arr, left, right)
         quicksort(arr, left, delepos - 1)
         quicksort(arr, delepos + 1, right)
-    insertionsort(arr)
+    else:
+        insertionsort(arr, left, right)
     return arr
 
 
@@ -56,18 +57,19 @@ def finn_median(arr, left, right):
 
 #print(quicksort(arr0))
 insertion, quick = 0, 0
-x = 1000
+x = 20
 
 while quick >= insertion:
-    x += 100
+    x += 1
     arr0 = [random.randint(0, x) for x in range(0, x)]
-    print(x, arr0)
+    print(x)
     tid0 = time.time()
     quicksort(arr0)
     quick = time.time() - tid0
     tid2 = time.time()
     insertionsort(arr0)
     insertion = time.time() - tid2
+    print("quick {:f}, insertion {:f}".format(quick, insertion))
     if quick <= insertion:
         break
 
