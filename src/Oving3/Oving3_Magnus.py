@@ -1,53 +1,132 @@
-def insertionsort(arr):
-    for i in range(1, len(arr)):
+import random
+import time
+
+
+def insertionsort(arr, left=0, right=-1):
+    """
+    Sorterer en del av eller en hel array med insertion sort.
+    :param arr:
+    :param left: venstre grense for delen av arr som skal sorteres, inklusivt
+    :param right: høyre grense for delen av arr som skal sorteres, inklusivt
+    :return:
+    """
+    if right < 0:
+        right = len(arr) - 1
+
+    for i in range(left + 1, right + 1):
         current = arr[i]
         j = i - 1
-        while j >= 0 and arr[j] > current:
+        while j >= left and arr[j] > current:
             arr[j + 1] = arr[j]
             j -= 1
         arr[j + 1] = current
 
 
-def quicksort(arr, left = 0, right = -1):
-    if right == -1:
-        right = len(arr)
+def quicksort(arr, left=0, right=-1):
+    """
+    Sorterer en del av eller en hel array med quicksort.
+    :param arr:
+    :param left: venstre grense for delen av arr som skal sorteres, inklusivt
+    :param right: høyre grense for delen av arr som skal sorteres, inklusivt
+    :return:
+    """
+    if right < 0:
+        right = len(arr) - 1
 
-    if len(arr) <= 10:
-        insertionsort(arr)
+    if right - left <= 10:  # Sorter en delarray med insertionsort hvis den er liten nok
+        insertionsort(arr, left, right)
         return
 
-    deleps = 0
-    quicksort(arr, left, deleps-1)
-    quicksort(arr, deleps + 1, right)
-    l = arr[0]
-    m = arr[len(arr) / 2]
-    r = arr[len(arr) - 1]
-    pivot = m
+    # Finn delingselementet
+    pivot = find_and_sort_median(arr, left, right)
+    pivot_value = arr[pivot]
 
-    if pivot > l and pivot > r:
-        pivot = max(l, r)
+    # Flytt delingselementet helt til høyre, ut av veien
+    arr[pivot], arr[right - 1] = arr[right - 1], arr[pivot]
+
+    lower_mark = left
+    higher_mark = right - 1
+
+    while True:
+        while True:
+            lower_mark += 1
+            # Let etter elementer som har høyere verdi enn delingsverdien
+            if arr[lower_mark] > pivot_value or lower_mark >= higher_mark:
+                break  # Fant et element som må flyttes til høyre side
+
+        while True:
+            higher_mark -= 1
+            # Let etter elementer som har lavere verdi enn delingsverdien
+            if arr[higher_mark] < pivot_value or lower_mark >= higher_mark:
+                break  # Fant et element som må flyttes til venstre side
+
+        # Når venstre og høyre peker krysser hverandre står alle elementer på riktig side i forhold til delingsverdien
+        if lower_mark >= higher_mark:
+            break
+
+        arr[lower_mark], arr[higher_mark] = arr[higher_mark], arr[lower_mark]
+
+    pivot = lower_mark  # Posisjonen til delingselementet skal være der venstre og høyre peker krysset hverandre
+    arr[pivot], arr[right - 1] = arr[right - 1], arr[pivot]  # Flytt delingselementet tilbake til riktig plass
+
+    # Sorter venstre og høyre deltabell rekursivt hver for seg
+    quicksort(arr, left, pivot - 1)
+    quicksort(arr, pivot + 1, right)
 
 
-arr = [5,4,3,2,1]
-insertionsort(arr)
-print(arr)
+def find_and_sort_median(arr, left, right):
+    """
+    Finner medianen av første, mellomste og siste element, sorterer de i forhold til hverandre,
+    og returnerer index til medianen.
+    :param arr:
+    :param left:
+    :param right:
+    :return:
+    """
+    middle = (left + right) // 2
 
-"""
-    if l > m:
-        temp = arr[0]
-        l = arr[0] = m
-        m = arr[len(arr) / 2] = temp
+    if arr[left] > arr[middle]:
+        arr[left], arr[middle] = arr[middle], arr[left]
 
-    if m > r:
-        temp = arr[len(arr) / 2]
-        m = arr[len(arr) / 2] = r
-        r = arr[len(arr) - 1] = temp
+    if arr[left] > arr[right]:
+        arr[left], arr[right] = arr[right], arr[left]
 
-Når sorteringen (og tidtaking) er ferdig, bruk en løkke som sjekker at tabellen er korrekt
-sortert. Altså at tabell[i+1] >= tabell[i] for alle i-verdier mellom 0 og
-tabell.length-2. Dermed finner dere ut om sorteringsalgoritmen deres virker som
-den skal. Det er fort gjort å gjøre feil. Man kan sortere veldig raskt, hvis resultatet ikke
-trenger å være riktig. :-(
+    if arr[middle] > arr[right]:
+        arr[middle], arr[right] = arr[right], arr[middle]
 
-Se på vanlige feil med tidtaking når vi er ferdig.
-"""
+    return middle
+
+
+def verify_sorted_array(arr):
+    """
+    Verifiserer at en array er riktig sortert.
+    :param arr:
+    :return:
+    """
+    prev = arr[0]
+
+    for current in arr[1:]:
+        if prev > current:
+            return False
+        prev = current
+
+    return True
+
+
+def test_array(arr):
+    print("Opprinnelig array (ti første elementer): ", end='')
+    print(arr[:10])
+    start = time.time()
+    quicksort(arr)
+    elapsed = time.time() - start
+    print("Sortert array (ti første elementer): ", end='')
+    print(arr[:10])
+    print("Tid brukt: {} s".format(elapsed))
+    print("Er tabellen sortert korrekt? {}\n".format(verify_sorted_array(arr)))
+
+
+size = 100000
+test_array([x for x in range(size)])
+test_array([x for x in range(size, 0, -1)])
+test_array([random.randint(-50, 100) for x in range(size)])
+test_array([5 for _ in range(size)])
