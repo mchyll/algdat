@@ -10,6 +10,9 @@ class Stack:
         self.len += 1
 
     def pop(self):
+        if self.len == 0:
+            return None
+
         self.len -= 1
         return self.elements[self.len]
 
@@ -52,6 +55,11 @@ def check_file(filename):
                         error_msg(linenum, charnum, "unexpected )")
                         stack.push(match)
                         stack.print_stack()
+
+        rest = stack.pop()
+        while rest:
+            print("Error on end of file: unmatched {}".format(rest))
+            rest = stack.pop()
 
 
 check_file("../Oving2.java")
