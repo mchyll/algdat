@@ -125,8 +125,9 @@ def test_array(arr):
     print("Er tabellen sortert korrekt? {}\n".format(verify_sorted_array(arr)))
 
 
-size = 100000
-test_array([x for x in range(size)])
-test_array([x for x in range(size, 0, -1)])
-test_array([random.randint(-50, 100) for x in range(size)])
-#test_array([5 for _ in range(size)])
+if __name__ == "__main__":
+    size = 100000
+    test_array([x for x in range(size)])
+    test_array([x for x in range(size, 0, -1)])
+    test_array([random.randint(-50, 100) for x in range(size)])
+    #test_array([5 for _ in range(size)])
