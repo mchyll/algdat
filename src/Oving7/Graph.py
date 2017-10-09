@@ -16,6 +16,14 @@ class GraphNode:
     def add_edge_to(self, other_node):
         self.edges.add(other_node)
 
+    def get_neighbors(self):
+        neighbors = []
+        node = self.edges.head
+        while node is not None:
+            neighbors.append(node.value)
+            node = node.value
+        return neighbors
+
 
 def import_graph(filename):
     graph = Graph()

@@ -1,4 +1,5 @@
 from Graph import Graph, GraphNode
+from Queue import Queue
 
 names = {}
 
@@ -28,3 +29,19 @@ with open("C:\L7Skandinavia", "r", encoding="utf-8") as graph_file:
 
 node: GraphNode = graph.nodes[1234]
 print("{} har {} veier fra seg".format(node.label, node.edges.size()))
+
+
+def bfs(graph, from_node, to_node):
+    for node in graph.nodes:
+        node.dist = -1
+
+    from_node.dist = 0
+    queue = Queue()
+    queue.enqueue(from_node)
+    while not queue.empty():
+        node = queue.dequeue()
+        for neighbor in node.get_neighbors():
+            if neighbor.dist < 0:
+                neighbor.dist = node.dist + 1
+                neighbor.predecessor = node
+                queue.enqueue(neighbor)
