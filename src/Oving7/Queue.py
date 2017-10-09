@@ -7,8 +7,11 @@ class Queue(LinkedList):
 
     def dequeue(self):
         node = self.head
+        if node is None:
+            return None
+
         self.head = self.head.next
-        return node
+        return node.value
 
     def empty(self):
         return self.head is None

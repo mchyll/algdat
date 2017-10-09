@@ -17,12 +17,10 @@ class GraphNode:
         self.edges.add(other_node)
 
     def get_neighbors(self):
-        neighbors = []
-        node = self.edges.head
-        while node is not None:
-            neighbors.append(node.value)
-            node = node.value
-        return neighbors
+        neighbor = self.edges.head
+        while neighbor is not None:
+            yield neighbor.value
+            neighbor = neighbor.next
 
 
 def import_graph(filename):

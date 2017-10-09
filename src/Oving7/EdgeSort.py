@@ -29,7 +29,7 @@ def quicksort(arr, left=0, right=-1):
     if right < 0:
         right = len(arr) - 1
 
-    if right - left <= 10:  # Sorter en delarray med insertionsort hvis den er liten nok
+    if right - left <= 200:  # Sorter en delarray med insertionsort hvis den er liten nok
         insertionsort(arr, left, right)
         return
 

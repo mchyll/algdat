@@ -1,8 +1,6 @@
 from functools import total_ordering
-
 import sys
-
-from EdgeSort import quicksort, insertionsort
+from EdgeSort import quicksort
 
 
 class CompactGraph:
@@ -24,6 +22,12 @@ class EdgeEntry:
 
     def __lt__(self, other):
         return self.from_node < other.from_node
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return "{} -> {}".format(self.from_node, self.to_node)
 
 
 def import_compact_graph(filename):
@@ -47,12 +51,11 @@ def import_compact_graph(filename):
 
     print("Memory usage of edge entries: {}".format(sys.getsizeof(edge_entries)))
     print("Sorting edge entries...")
-    insertionsort(edge_entries)
+    quicksort(edge_entries)
 
-    """print("Generating node and edge arrays...")
+    print("Generating node and edge arrays...")
     for edge_entry in edge_entries:
         pass
-    """
 
     print("Done")
 
@@ -60,15 +63,17 @@ def import_compact_graph(filename):
 
 
 if __name__ == "__main__":
+    """
     a = EdgeEntry(0, 1)
     b = EdgeEntry(1, 2)
     c = EdgeEntry(2, 1)
     d = EdgeEntry(0, 2)
+    arr = [a, b, c, d, EdgeEntry(-6,0), EdgeEntry(4,7), EdgeEntry(1,3)]
 
     assert a == d     # True
     assert not a > b  # False
     assert c > b      # True
     assert d <= a     # True
-
+    """
 
     import_compact_graph("C:\L7Skandinavia")
