@@ -9,12 +9,9 @@ class GraphNode:
     label = None
     edges = None
 
-    # Variables used in BFS, DFS and topological sort
+    # Variables used in BFS and topological sort
     dist = -1
     predecessor = None
-    found_time = 0
-    finished_time = 0
-    time = 0  # Static variable
     found = False
     next_node = None
 
@@ -30,15 +27,6 @@ class GraphNode:
         while neighbor is not None:
             yield neighbor.value
             neighbor = neighbor.next
-
-    @staticmethod
-    def reset_time():
-        GraphNode.time = 0
-
-    @staticmethod
-    def read_time():
-        GraphNode.time += 1
-        return GraphNode.time
 
 
 def import_graph(filename, names=None):
