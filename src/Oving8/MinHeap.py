@@ -74,8 +74,8 @@ class MinHeap:
         if len(self.nodes) <= self.len:
             self.nodes.append(node)
         else:
-            self.nodes[self.len] = node
-        self.decrease_pri(self.len, 0)
+            self.nodes[self.len - 1] = node
+        self.decrease_pri(self.len - 1, 0)
 
 
 if __name__ == "__main__":
