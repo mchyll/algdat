@@ -27,21 +27,24 @@ class HeapNode:
         self.data = data
 
 
+# Min-Heap sp
 class MinHeap:
     len = 0
     nodes = []
 
     def fix_heap(self, index):
-        left = left_child_index(index)
-        if left < self.len:
-            right = left + 1
+        child_to_swap = left_child_index(index)
+        if child_to_swap < self.len:
+            right_child = child_to_swap + 1
 
-            if right < self.len and self.nodes[right].priority < self.nodes[left].priority:
-                left = right
+            if right_child < self.len and self.nodes[right_child].priority < self.nodes[child_to_swap].priority:
+                child_to_swap = right_child
 
-            if self.nodes[left].priority < self.nodes[index].priority:
-                self.nodes[index], self.nodes[left] = self.nodes[left], self.nodes[index]
-                self.fix_heap(left)
+            if self.nodes[child_to_swap].priority < self.nodes[index].priority:
+                self.nodes[index], self.nodes[child_to_swap] = self.nodes[child_to_swap], self.nodes[index]
+                # Dijkstra needs to know the positions of nodes in the heap
+                self.nodes[index].data.heap_pos = child_to_swap
+                self.fix_heap(child_to_swap)
 
     def create_heap(self):
         index = self.len >> 1
@@ -61,6 +64,8 @@ class MinHeap:
         parent = parent_index(index)
         while index > 0 and self.nodes[index].priority < self.nodes[parent].priority:
             self.nodes[index], self.nodes[parent] = self.nodes[parent], self.nodes[index]
+            # Dijkstra needs to know the positions of nodes in the heap
+            self.nodes[index].data.heap_pos = parent
             index = parent
             parent = parent_index(index)
 
@@ -68,13 +73,23 @@ class MinHeap:
         self.nodes[index].priority += pri
         self.fix_heap(index)
 
+    def set_pri(self, index, pri):
+        delta = pri - self.nodes[index].priority
+        if delta > 0:
+            self.increase_pri(index, delta)
+        elif delta < 0:
+            self.decrease_pri(index, -delta)
+
     def insert(self, pri, data):
         node = HeapNode(pri, data)
         self.len += 1
         if len(self.nodes) <= self.len:
             self.nodes.append(node)
+            self.len = len(self.nodes)
         else:
             self.nodes[self.len - 1] = node
+
+        self.nodes[self.len - 1].data.heap_pos = self.len - 1
         self.decrease_pri(self.len - 1, 0)
 
 

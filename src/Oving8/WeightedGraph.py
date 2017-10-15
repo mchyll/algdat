@@ -15,11 +15,10 @@ class WeightedGraphNode:
     label = None
     edges = []
 
-    # Variables used in BFS and topological sort
+    # Variables used in Dijkstra and MinHeap
     dist = -1
     predecessor = None
-    found = False
-    next_node = None
+    heap_pos = -1
 
     def __init__(self, label=None):
         self.label = label
