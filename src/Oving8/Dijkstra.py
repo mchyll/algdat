@@ -5,7 +5,7 @@ from Graph import import_graph
 from WeightedGraph import import_weighted_graph, WeightedGraphNode, WeightedGraph
 
 
-def dijkstra(graph: WeightedGraph, start_node: WeightedGraphNode):
+def dijkstra(graph: WeightedGraph, start_node: WeightedGraphNode, end_node: WeightedGraphNode = None):
     # Reset nodes
     for node in graph.nodes:
         node.dist = math.inf
@@ -16,7 +16,7 @@ def dijkstra(graph: WeightedGraph, start_node: WeightedGraphNode):
     pri_queue = DijkstraMinHeap(graph)
     # print()
 
-    while pri_queue.len > 0:
+    while pri_queue.len > 0 and pri_queue.nodes[0] is not end_node:  # Cancel when end node is to be removed from queue
         # print_heap(pri_queue)
         node = pri_queue.pop_min()
         # print("Current: {}, dist: {}".format(node.label, node.dist))

@@ -68,6 +68,7 @@ class DijkstraMinHeap:
         self.nodes[self.len].heap_pos = -1  # Not in the heap anymore
         return self.nodes[self.len]
 
+    # Checks if a node is too far down in the heap, and swaps it upwards to its correct position
     def dist_decreased(self, index):
         parent = parent_index(index)
         # print("HEAP: dist_decreased")
