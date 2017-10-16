@@ -44,6 +44,7 @@ class MinHeap:
                 self.nodes[index], self.nodes[child_to_swap] = self.nodes[child_to_swap], self.nodes[index]
                 # Dijkstra needs to know the positions of nodes in the heap
                 self.nodes[index].data.heap_pos = child_to_swap
+                self.nodes[child_to_swap].data.heap_pos = index
                 self.fix_heap(child_to_swap)
 
     def create_heap(self):
@@ -66,6 +67,7 @@ class MinHeap:
             self.nodes[index], self.nodes[parent] = self.nodes[parent], self.nodes[index]
             # Dijkstra needs to know the positions of nodes in the heap
             self.nodes[index].data.heap_pos = parent
+            self.nodes[parent].data.heap_pos = index
             index = parent
             parent = parent_index(index)
 
