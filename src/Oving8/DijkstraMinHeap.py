@@ -36,8 +36,6 @@ class DijkstraMinHeap:
         self.init_heap()
 
     def swap(self, a, b):
-        # print(" " * 8 + "Swaps [{}]={} with [{}]={}".format(a, self.nodes[a].dist, b, self.nodes[b].dist))
-        # Dijkstra needs to know the positions of nodes in the heap
         self.nodes[a].heap_pos = b
         self.nodes[b].heap_pos = a
         self.nodes[a], self.nodes[b] = self.nodes[b], self.nodes[a]
@@ -71,15 +69,12 @@ class DijkstraMinHeap:
     # Checks if a node is too far down in the heap, and swaps it upwards to its correct position
     def dist_decreased(self, index):
         parent = parent_index(index)
-        # print("HEAP: dist_decreased")
-        # print("ser på [{}]={} og [{}]={}".format(index, self.nodes[index].dist, parent, self.nodes[parent].dist))
         while index > 0 and self.nodes[index].dist < self.nodes[parent].dist:
-            # print("    {} < {}, må derfor swappes".format(self.nodes[index].dist, self.nodes[parent].dist))
             self.swap(index, parent)
             index = parent
             parent = parent_index(index)
-            # print("ser på [{}]={} og [{}]={}".format(index, self.nodes[index].dist, parent, self.nodes[parent].dist))
 
+    # Same as fix_heap(index)
     def dist_increased(self, index):
         self.fix_heap(index)
 

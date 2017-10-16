@@ -15,6 +15,7 @@ with open("C:\L7Skandinavia-navn", "r", encoding="utf-8") as name_file:
 graph = import_weighted_graph("C:\\vgSkandinavia", names)
 start_node = graph.nodes[37774]  # 37774 er Kalvskinnet
 end_node = graph.nodes[18058]  # 18058 er Moholt
+
 print("Running Dijkstra from node {} to node {}".format(start_node.label, end_node.label))
 start_time = time.time()
 dijkstra(graph, start_node, end_node)
