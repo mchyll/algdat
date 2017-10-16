@@ -15,7 +15,9 @@ def dijkstra(graph: WeightedGraph, start_node: WeightedGraphNode):
 
     while pri_queue.len > 0:
         node = pri_queue.pop_min().data
+        print("Current: {}".format(node.label))
         for edge in node.edges:
+            print("    neighbor: {}".format(node.label))
             if edge.to_node.dist > node.dist + edge.weight:
                 dist_delta = edge.to_node.dist - node.dist - edge.weight
                 edge.to_node.dist = node.dist + edge.weight
