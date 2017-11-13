@@ -41,11 +41,13 @@ public class FileCompressor {
         try {
             byte[] input = Files.readAllBytes(Paths.get(inputFile));
             byte[] compressed = LZ.compress(input);
+            LZ.interpret(compressed);
             byte[] decompressed = LZ.decompress(compressed);
 
             double ratio = (double) compressed.length / input.length;
             System.out.println("Input: " + input.length + ", compressed output: " + compressed.length + ", ratio: " + ratio);
             System.out.println("Decompressed equals input? " + Arrays.equals(input, decompressed));
+            System.out.println();
 
         } catch (IOException e) {
             System.err.println("IO error: " + e.getMessage());
@@ -54,8 +56,10 @@ public class FileCompressor {
     }
 
     public static void main(String[] args) {
-        compress("C:\\Users\\Magnus\\Desktop\\crt.txt", "C:\\Users\\Magnus\\Desktop\\crt.txt.lz");
-        decompress("C:\\Users\\Magnus\\Desktop\\crt.txt.lz", "C:\\Users\\Magnus\\Desktop\\crt_orig.txt");
-        testCompressFile("C:\\Users\\Magnus\\Desktop\\crt.txt");
+        //compress("C:\\Users\\Magnus\\Desktop\\compress.txt", "C:\\Users\\Magnus\\Desktop\\compress_lz.txt");
+        //decompress("C:\\Users\\Magnus\\Desktop\\compress_lz.txt", "C:\\Users\\Magnus\\Desktop\\compress_decomp.txt");
+        //testCompressFile("C:\\Users\\Magnus\\Desktop\\compress.txt");
+
+        decompress("C:\\Users\\Magnus\\Desktop\\diverse.pdf.lz", "C:\\Users\\Magnus\\Desktop\\diverse_copy.pdf");
     }
 }

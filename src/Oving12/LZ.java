@@ -76,8 +76,13 @@ public class LZ {
             }
             else {
                 // Another byte is incompressible
-                // Increase uncompressed counter and check for overflow
-                if (++uncompressed == Byte.MAX_VALUE) {
+                uncompressed++;
+
+                // Move inPointer to next byte
+                inPointer++;
+
+                // Check for overflow
+                if (uncompressed == Byte.MAX_VALUE) {
                     // Write uncompressed-marker
                     output[uncompressedMarkerPos] = uncompressed;
                     outPointer++;
@@ -91,9 +96,6 @@ public class LZ {
                     uncompressedMarkerPos = outPointer;
                     uncompressed = 0;
                 }
-
-                // Move inPointer to next byte
-                inPointer++;
             }
         }
 
@@ -112,6 +114,11 @@ public class LZ {
         return Arrays.copyOf(output, outPointer);
     }
 
+    /**
+     * Decompresses an array of bytes.
+     * @param input the byte array of data to decompress
+     * @return a byte array containing the decompressed data
+     */
     public static byte[] decompress(byte[] input) {
         byte[] output = new byte[input.length * 10];
         int inPointer = 0, outPointer = 0;
@@ -119,7 +126,7 @@ public class LZ {
         while (inPointer < input.length) {
             // Backreference
             if (input[inPointer] < 0) {
-                short backref = (short) -(input[inPointer++] << 8 | input[inPointer++]);
+                short backref = (short) -(input[inPointer++] << 8 | input[inPointer++] & 0xff);
                 byte len = input[inPointer++];
                 for (int i = 0; i < len; i++) {
                     output[outPointer] = output[outPointer - backref];
@@ -148,7 +155,7 @@ public class LZ {
         while (pointer < compressed.length) {
             // Backreference
             if (compressed[pointer] < 0) {
-                short backref = (short) -(compressed[pointer++] << 8 | compressed[pointer++]);
+                short backref = (short) -(compressed[pointer++] << 8 | compressed[pointer++] & 0xff);
                 byte len = compressed[pointer++];
                 System.out.print("[look " + backref + " bytes behind, repeat sequence to length " + len + "] ");
             }
@@ -181,8 +188,20 @@ public class LZ {
     }
 
     public static void main(String[] args) {
-        testCompressArray(new byte[]{1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,5,4,4,4,4,4,4,4,4,4,4,4,8,2,5,7});
-        testCompressArray(new byte[]{7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,6,7,7,7,7,7,7,7,7,7});
-        testCompressArray(new byte[]{3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6});
+        //testCompressArray(new byte[]{1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,5,4,4,4,4,4,4,4,4,4,4,4,8,2,5,7});
+        //testCompressArray(new byte[]{7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,6,7,7,7,7,7,7,7,7,7});
+        //testCompressArray(new byte[]{3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6});
+
+        int l = 128;
+        byte[] uc = new byte[l * 3];
+        for (int i = 0; i < l; i++) {
+            uc[i * 3] = (byte) i;
+            uc[i * 3 + 1] = (byte) i;
+            uc[i * 3 + 2] = (byte) i;
+        }
+
+        //byte[] uc = {1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5};
+        System.out.println(Arrays.toString(uc));
+        testCompressArray(uc);
     }
 }
