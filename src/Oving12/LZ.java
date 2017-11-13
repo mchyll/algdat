@@ -1,6 +1,6 @@
 package Oving12;
 
-import java.io.IOException;
+import java.util.Arrays;
 
 public class LZ {
 
@@ -109,9 +109,34 @@ public class LZ {
             }
         }
 
-        byte[] trimmedOutput = new byte[outPointer];
-        System.arraycopy(output, 0, trimmedOutput, 0, outPointer);
-        return trimmedOutput;
+        return Arrays.copyOf(output, outPointer);
+    }
+
+    public static byte[] decompress(byte[] input) {
+        byte[] output = new byte[input.length * 10];
+        int inPointer = 0, outPointer = 0;
+
+        while (inPointer < input.length) {
+            // Backreference
+            if (input[inPointer] < 0) {
+                short backref = (short) -(input[inPointer++] << 8 | input[inPointer++]);
+                byte len = input[inPointer++];
+                for (int i = 0; i < len; i++) {
+                    output[outPointer] = output[outPointer - backref];
+                    outPointer++;
+                }
+            }
+
+            // Uncompressed data
+            else {
+                int uncompressedLen = input[inPointer++];
+                for (int i = 0; i < uncompressedLen; i++) {
+                    output[outPointer++] = input[inPointer++];
+                }
+            }
+        }
+
+        return Arrays.copyOf(output, outPointer);
     }
 
     /**
@@ -140,19 +165,24 @@ public class LZ {
         System.out.println();
     }
 
-    public static void main(String[] args) throws IOException {
-        //byte[] in = new byte[]{1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 8, 2, 5, 7};
-        byte[] in = new byte[]{7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,6,7,7,7,7,7,7,7,7,7};
-        //byte[] in = new byte[]{3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6};
-
-        byte[] out = compress(in);
-        for (byte by : out) {
+    public static void testCompressArray(byte[] array) {
+        byte[] compressed = compress(array);
+        for (byte by : compressed) {
             System.out.print(by + " ");
         }
         System.out.println();
-        interpret(out);
 
-        double ratio = (double) out.length / in.length;
-        System.out.println("Input: " + in.length + ", output: " + out.length + ", ratio: " + ratio);
+        double ratio = (double) compressed.length / array.length;
+        System.out.println("Input: " + array.length + ", output: " + compressed.length + ", ratio: " + ratio);
+
+        byte[] decompressed = decompress(compressed);
+
+        System.out.println("Decompressed equals input? " + Arrays.equals(array, decompressed) + "\n");
+    }
+
+    public static void main(String[] args) {
+        testCompressArray(new byte[]{1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,5,4,4,4,4,4,4,4,4,4,4,4,8,2,5,7});
+        testCompressArray(new byte[]{7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,6,7,7,7,7,7,7,7,7,7});
+        testCompressArray(new byte[]{3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6});
     }
 }
