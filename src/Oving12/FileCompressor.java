@@ -41,7 +41,6 @@ public class FileCompressor {
         try {
             byte[] input = Files.readAllBytes(Paths.get(inputFile));
             byte[] compressed = LZ.compress(input);
-            LZ.interpret(compressed);
             byte[] decompressed = LZ.decompress(compressed);
 
             double ratio = (double) compressed.length / input.length;
@@ -56,10 +55,10 @@ public class FileCompressor {
     }
 
     public static void main(String[] args) {
-        //compress("C:\\Users\\Magnus\\Desktop\\compress.txt", "C:\\Users\\Magnus\\Desktop\\compress_lz.txt");
-        //decompress("C:\\Users\\Magnus\\Desktop\\compress_lz.txt", "C:\\Users\\Magnus\\Desktop\\compress_decomp.txt");
-        //testCompressFile("C:\\Users\\Magnus\\Desktop\\compress.txt");
-
-        decompress("C:\\Users\\Magnus\\Desktop\\diverse.pdf.lz", "C:\\Users\\Magnus\\Desktop\\diverse_copy.pdf");
+        System.out.println(System.getProperty("user.dir"));
+        decompress("algdat.iml.lz", "algdat.iml.orig");
+        //compress("C:\\Users\\Magnus\\Desktop\\opg12.txt", "C:\\Users\\Magnus\\Desktop\\opg12.txt.lz");
+        //compress("C:\\Users\\Magnus\\Desktop\\opg12.pdf", "C:\\Users\\Magnus\\Desktop\\opg12.pdf.lz");
+        //compress("C:\\Users\\Magnus\\Desktop\\opg12.tex", "C:\\Users\\Magnus\\Desktop\\opg12.tex.lz");
     }
 }
