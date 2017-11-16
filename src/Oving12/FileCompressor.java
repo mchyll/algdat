@@ -55,9 +55,7 @@ public class FileCompressor {
     }
 
     public static void main(String[] args) {
-        System.out.println(System.getProperty("user.dir"));
-        decompress("algdat.iml.lz", "algdat.iml.orig");
-        //compress("C:\\Users\\Magnus\\Desktop\\opg12.txt", "C:\\Users\\Magnus\\Desktop\\opg12.txt.lz");
+        decompress("C:\\Users\\Magnus\\Desktop\\RAW_CANON_EOS_550D.CR2.lz", "C:\\Users\\Magnus\\Desktop\\RAW_CANON_EOS_550D.orig.CR2");
         //compress("C:\\Users\\Magnus\\Desktop\\opg12.pdf", "C:\\Users\\Magnus\\Desktop\\opg12.pdf.lz");
         //compress("C:\\Users\\Magnus\\Desktop\\opg12.tex", "C:\\Users\\Magnus\\Desktop\\opg12.tex.lz");
     }
