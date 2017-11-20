@@ -1,6 +1,3 @@
-import math
-
-
 def parent_index(node_index):
     return (node_index - 1) >> 1
 
@@ -13,18 +10,8 @@ def right_child_index(node_index):
     return (node_index + 1) << 1
 
 
-def print_heap(heap, index=0):
-    if index >= heap.len:
-        return
-
-    depth = int(math.log(index + 1, 2))
-    print(" " * 4 * depth + "[{}]={}".format(heap.nodes[index].label, heap.nodes[index].dist))
-    print_heap(heap, left_child_index(index))
-    print_heap(heap, right_child_index(index))
-
-
-# Min-Heap for use in Dijkstra's algorithm
-class DijkstraMinHeap:
+# Min-Heap for use in A* algorithm
+class AStarMinHeap:
     len = 0
     nodes = []
 
@@ -46,10 +33,10 @@ class DijkstraMinHeap:
         if child_to_swap < self.len:
             right_child = child_to_swap + 1
 
-            if right_child < self.len and self.nodes[right_child].dist < self.nodes[child_to_swap].dist:
+            if right_child < self.len and self.nodes[right_child].prio < self.nodes[child_to_swap].prio:
                 child_to_swap = right_child
 
-            if self.nodes[child_to_swap].dist < self.nodes[index].dist:
+            if self.nodes[child_to_swap].prio < self.nodes[index].prio:
                 self.swap(index, child_to_swap)
                 self.fix_heap(child_to_swap)
 
@@ -67,24 +54,24 @@ class DijkstraMinHeap:
         return self.nodes[self.len]
 
     # Checks if a node is too far down in the heap, and swaps it upwards to its correct position
-    def dist_decreased(self, index):
+    def prio_decreased(self, index):
         parent = parent_index(index)
-        while index > 0 and self.nodes[index].dist < self.nodes[parent].dist:
+        while index > 0 and self.nodes[index].prio < self.nodes[parent].prio:
             self.swap(index, parent)
             index = parent
             parent = parent_index(index)
 
     # Same as fix_heap(index)
-    def dist_increased(self, index):
+    def prio_increased(self, index):
         self.fix_heap(index)
 
-    def set_dist(self, index, dist):
-        delta = dist - self.nodes[index].dist
-        self.nodes[index].dist = dist
+    def set_prio(self, index, prio):
+        delta = prio - self.nodes[index].prio
+        self.nodes[index].prio = prio
         if delta > 0:
-            self.dist_increased(index)
+            self.prio_increased(index)
         elif delta < 0:
-            self.dist_decreased(index)
+            self.prio_decreased(index)
 
     def insert(self, node):
         self.len += 1
@@ -95,4 +82,4 @@ class DijkstraMinHeap:
             self.nodes[self.len - 1] = node
 
         self.nodes[self.len - 1].heap_pos = self.len - 1
-        self.dist_decreased(self.len - 1)
+        self.prio_decreased(self.len - 1)
