@@ -27,7 +27,7 @@ def topological_sort(graph: Graph):
 
 
 if __name__ == "__main__":
-    graph = import_graph("C:\L7g5")
+    graph = import_graph("L7g5")
 
     print("Running topological sort")
     node_list = topological_sort(graph)

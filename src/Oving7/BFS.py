@@ -35,7 +35,7 @@ with open("C:\L7Skandinavia-navn", "r", encoding="utf-8") as name_file:
 """
 
 if __name__ == "__main__":
-    graph = import_graph("C:\L7g1")
+    graph = import_graph("L7g1")
 
     start_node: GraphNode = graph.nodes[5]
     print("Running BFS from node {}".format(start_node.label))
